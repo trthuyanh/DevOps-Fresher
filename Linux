@@ -1,0 +1,84 @@
+Brigde network : tất cả các thiết bị kết nối được tới máy ảo
+NAT network : chỉ có thiết bị của chính mình mới kết nối được tới máy ảo
+Khuyên dùng :
+- PC sử dụng Brigde
+- Laptop sử dụng NAT
+
+-----Ubuntu Server-----
+Khi khởi tạo, tạo IP tĩnh cho Server
+  $sudo -i : để sử dụng quyền user root
+  $nano /etc/netplan/*.yaml 
+-----Start Script-----
+    dhcp4: false (tắt tính năng tự động cấp IP)
+    addresses: [192.168.x.110/24] (x tùy thuộc vào mạng NAT, Bridge bạn đang xài)
+    gateway4: 192.168.x.1
+    nameserver:
+      addresses: [8.8.8.8,8.8.4.4]
+-----End Script-----
+  $netplan apply
+  $ip a
+Nên snappshoot sau khi cấu hình xong
+  
+-----Linux Command-----
+$pwd : cho biết bạn đang ở đâu
+$whoami : cho biết bạn là ai
+$mkdir -p data/data1/data2 : tạo nhiều thư mục cùng 1 lúc
+$touch file_name : tạo file
+$rm file_name : xóa file
+$rm -r data/data1 : xóa thư mục
+$cp file_name folder_name : copy file sang thư mục
+$cp folder1_name folder2_name : copy folder này sang folder kia
+$echo : dùng để in ra màn hình hoặc xem thông tin của một biến
+$echo content >> output_file : ghi thêm vào tập tin
+$history : dùng để xem lại các câu lệnh đã nhập
+$tail -n number file_name : in ra number line cuối file
+$tail -f file_name : dùng để follow file 
+-----Use Vim-----
+$vi file_name : tạo/mở file
+Có 2 chế độ : command mode và insert mode
+Phím "i" : mở chế độ insert mode
+Phím "Esc" : mở chế độ command mode
+Phím "dd" : xóa 1 dòng
+Phím "u" : khôi phục dữ liệu đã xóa trước đó
+Phím "yy" : để copy dữ liệu
+Phím "p" : để paste dữ liệu
+Phím "/" : dùng để search dữ liệu
+Phím ":x" : dùng để lưu dữ liệu
+Phím ":q!" : dùng cho việc đã chỉnh sửa nhưng không lưu
+-----Command kiểm tra trạng thái-----
+$free -m : kiểm tra RAM đang sử dụng
+$df -h /: kiểm tra server còn trống bao nhiêu disk
+$top : tương tự như Task Manager
+$sudo hostnamectl set-hostname host_name : đổi tên host name của server
+$reboot : khởi động lại hệ thống
+$netstat -tlpun :
+  -t : hiển thị các kết nối TCP
+  -l : hiển thị các cổng đang mở/lắng nghe/chờ kết nối
+  -p : hiển thị tiến trình và chương trình liên quan đến mỗi kết nối
+  -u : hiển thị các kết nối UDP
+  -n : hiển thị địa chỉ IP và port trong dạng số
+$ps -ef: xem các tiến trình đang chạy trên hệ thống
+$ping 8.8.8.8 : kiểm tra kết nối đến Internet
+$telnet ip_addr port : kiểm tra kết nối đến server khác
+$traceroute -T -p port ip_addr: kiểm tra đường từ nguồn tới đích có bị chặn hay không
+  -T : tcp
+  -p : port
+-----Quyền truy cập Linux-----
+$useradd : tạo user không có password, hostname
+$adduser : tạo user đầy đủ thông tin
+$deluser : xóa user
+$deluser user_name group_name : xóa user khỏi group
+$grouppadd : tạo group user
+$delgroup : xóa group user
+$usermod -aG group_name user_name : thêm user vào group
+  -a : thêm vào
+  -G : không ghi đè lên các user hiện có trong group
+$group user_name : kiểm tra user đang ở trong group nào
+$group user_name
+$sudo chown user_name:group_name folder_name/file_name : dùng để thay đổi quyền sở hữu thư mục/file
+$sudo chown -R user_name:group_name folder_name
+  -R : dùng thay đổi quyền sở hữu cho tất cả các file có trong thư mục
+$sudo chmod u=rwx,g=rw,o=- folder_path/name_path : thay đổi quyền read, write, execute của user/group/other
+Thay đổi quyền bằng số read = 4, write = 2, execute = 1
+$chmod 750 folder_name : thay đổi lần lượt cho user/group/other
+/etc/passwd : chứa thông tin các user, group,...
