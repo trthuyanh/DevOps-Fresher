@@ -1,0 +1,9 @@
+File mặc định của nginx:
+/etc/nginx/sites-avaiable/default
+Test cấu hình file nginx có đúng syntax không:
+$nginx -t
+Áp dụng cấu hình mới:
+$systemctl restart nginx
+-----Chạy conf dự án-----
+
+Note dự án : vue,angola -> dist folder, reactjs -> build folder
