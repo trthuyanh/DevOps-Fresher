@@ -82,3 +82,11 @@ $sudo chmod u=rwx,g=rw,o=- folder_path/name_path : thay đổi quyền read, wri
 Thay đổi quyền bằng số read = 4, write = 2, execute = 1
 $chmod 750 folder_name : thay đổi lần lượt cho user/group/other
 /etc/passwd : chứa thông tin các user, group,...
+------Triển khai dự án Frontend-----
+$scp file_name name_user@ip_addr:folder_path --copy file vào trong server
+$unzip file_zip_name : giải nén file 
+------Fix lỗi user không truy cập được vào root-----
+$exit 
+$sudo nano /etc/sudoers
+---Edit---
+user_name ALL=(ALL)  ALL
