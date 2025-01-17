@@ -1,0 +1,58 @@
+Khi triển khai dự án cần nhớ:
+1. Dự án cần công cụ tương ứng nào
+2. Chỉ cần lưu ý duy nhất là file cấu hình trong dự án
+3. Triển khai dự án cần đúng 2 bước 1 là build và 2 là run
+*Chú ý
+- Mỗi dự án sẽ có thư mục riêng
+- Mỗi dự án sẽ có user riêng
+Có các cách chạy dự án sau :
+- Chạy dạng nền
+- Chạy dạng webserver(nginx)
+- Chạy dạng service
+- Chạy dạng vm2 
+-----Chạy dự án Frontend Vue bằng Nginx-----
+File mặc định của nginx:
+/etc/nginx/sites-avaiable/default
+$adduser project_name_user : thêm user dự  
+$chown -R project_name_user:project_name_user /project_folder_path
+$chmod -R 750 /project_folder_path
+Vào thư mục dự án
+$npm run build : build dự án 
+* Note dự án : vue,angola -> dist folder, reactjs -> build folder
+
+-> Chạy dạng nền
+(kiểm tra lệnh trong package.js)
+$nmp run serve
+
+-> Chạy dạng webserver (nginx)
+$vi conf.d/project_name.conf
+-----start script-----
+server {
+  listen 8081; (có thể tùy chọn port)
+  root /folder_project_path;
+  index index.html;
+  try_files $uri $uri/ /index.html;
+}
+-----end script-----
+$ngix -t : lệnh kiểm tra cấu hình có đúng systax 
+$nginx -s reload (áp dụng cấu hình mà không cần restart lại nginx)
+  $systemctl restart nginx (restart toàn bộ các cấu hình dự án trong ngix)
+Lỗi chạy 500 : $adduser group_project_name www-data (user của /etc/nginx/nginx.conf)
+               $usermod -aG group_project_name www-data
+-> Chạy dạng service
+-----Chạy dự án Frontend Vision(reacjs)-----
+Vào thư mục dự án
+$npm install
+$sudo vi /lib/systemd/system/project_name.service
+-----start script-----
+[Service]
+Type=simple
+User=vision (tùy thuộc vào tên dự án đang sử dụng)
+Restart=on-failure
+WorkingDirectory=/folder_project_path
+ExecStart=npm run start -- --port=3000
+-----end script-----
+$systemctl daemon-reload
+$systemctl start vision
+$systemctl status vision
+Chạy dạng vm2
