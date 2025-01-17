@@ -73,8 +73,8 @@ $delgroup : xóa group user
 $usermod -aG group_name user_name : thêm user vào group
   -a : thêm vào
   -G : không ghi đè lên các user hiện có trong group
-$group user_name : kiểm tra user đang ở trong group nào
-$group user_name
+$groups user_name : kiểm tra user đang ở trong group nào
+$groups user_name
 $sudo chown user_name:group_name folder_name/file_name : dùng để thay đổi quyền sở hữu thư mục/file
 $sudo chown -R user_name:group_name folder_name
   -R : dùng thay đổi quyền sở hữu cho tất cả các file có trong thư mục
