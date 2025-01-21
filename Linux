@@ -32,7 +32,7 @@ $echo : dùng để in ra màn hình hoặc xem thông tin của một biến
 $echo content >> output_file : ghi thêm vào tập tin
 $history : dùng để xem lại các câu lệnh đã nhập
 $tail -n number file_name : in ra number line cuối file
-$tail -f file_name : dùng để follow file 
+$tail -f file_name : dùng để follow file in real time
 -----Use Vim-----
 $vi file_name : tạo/mở file
 Có 2 chế độ : command mode và insert mode
