@@ -1,0 +1,9 @@
+Môi trường phát triển : Developer
+Môi trường kiểm thử : Stagging
+Môi trường chạy thật : Product
+Lợi ích:
+- Nhiều người phát triển
+- Theo dõi thay đổi
+- Kiểm soát truy cập
+- Quản lý phiên bản
+- Sao lưu và phục hồi
