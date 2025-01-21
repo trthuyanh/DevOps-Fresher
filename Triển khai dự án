@@ -55,4 +55,38 @@ ExecStart=npm run start -- --port=3000
 $systemctl daemon-reload
 $systemctl start vision
 $systemctl status vision
+-----Chạy dự án Backend có DB là MariaDB-----
+/etc/mysql/ : thư mục chứa DB
+systemctl stop mariadb (khi chỉnh sửa file conf DB cần dừng dịch vụ)
+vi etc/mysql/mariadb.conf.d/50-server.cnf : chỉnh sửa DB để truy cập ngoài mạng Internet
+-----start script-----
+bind-address = 127.0.0.1
+-> bind-address = 0.0.0.0
+-----end script-----
+sysctl restart mariadb
+Để có thể chạy đầy đủ dự án, cần phải thêm file db dự án vào db của server
+$mysql -u root
+> show databases (xem các DB hiện có)
+> create database shoeshop;(tạo database)
+> create user 'shoeshop'@'%' identified by 'shoeshop'; (% để db có thể được truy cập bởi tất cả server, sau by là
+password của user'
+> grant all privileges on shoeshop.* to 'shoeshop'@'%'; (gán quyền cho User tác động lên Database đó)
+> flush privileges (lưu lại quyền đã thay đổi)
+> exit
+
+Truy cập database bằng user:
+mysql -h 192.168.x.xxx -P 33xx -u shoeshop
+  -h : Địa chỉ IP của server
+  -P : port dùng để truy cập
+  -u : user sử dụng
+> use shoeshop; (sử dụng DB cần dùng)
+> show tables; (sử dụng để hiển thị các table trong DB)
+> source file_db_path.db 
+$vi /.../application.properties : chỉnh sửa file cấu hình db
+mvp install : build chương trình
+$java -jar file_build.jar
+$nohup java -jar file_build.jar 2>&1 & : chạy dạng nền và lưu log ở file nohop.out
+
+$kill -9 PID
+  -9 : buộc process dừng lại
 Chạy dạng vm2
