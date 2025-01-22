@@ -7,3 +7,69 @@ Lợi ích:
 - Kiểm soát truy cập
 - Quản lý phiên bản
 - Sao lưu và phục hồi
+-----Cài đặt Gitlab Server-----
+Keyword search : Gitlab ee 
+Tạo domain bằng host
+$vi/etc/hosts 
+add 192.168.xxx.x domain_name
+$vi /etc/gitlab/gitlab.rb
+Edit external_url = domain_name
+$sudo gitlab-ctl reconfigure
+Keywork search : "host path window"
+c:\Windows\System32\Drivers\etc : insert trên window
+Copy file hosts vào thư mục khác và đổi tên hosts origin để backup, xóa file hosts
+Tạo một file mới tên hosts và add : 192.168.xxx.x domain_name
+Đưa file hosts trở lại thư mục c:\Windows\System32\Drivers\etc
+Lúc này server đã có thể truy cập được trên window:
+http://192.168.xxx.x 
+TK mặc định : root
+PW mặc định : /etc/gitlab/initial_root_password 
+Truy cập Settings/General tắt tính năng Sign-up enabled, Require admin approval for new sign-up để giới hạn quyền
+tạo tài khoản khi chưa được cho phép
+Truy cập : Setting/CI/CD 
+Continuous Inregration and Depployment -> Expand -> Bỏ tick Default to Auto DevOps pipeline for all projects
+-----Những lệnh git thông dụng-----
+Ai sẽ là người push code lên
+$git config --global user.name "Administrator"
+$git config --global user.email "admin@example.com"
+
+Clone dự án về máy local :
+git clone http://git.mahito.com/shoeshop/shoeshop.git
+cd shoeshop
+
+Chuyển sang nhánh main:
+git switch -c main
+touch README.md
+
+Thêm file cần đẩy vào nhánh
+git add README.md
+
+Thêm commit về file
+git commit -m "add README"
+
+Đẩy file lên nhánh:
+git push -u origin main
+
+Kiểm tra trạng thái git:
+$git status
+
+Tạo nên một nhánh mới:
+$git checkout -b main
+
+Đưa code vào trạng thái stagging area:
+$git add .
+$git commit -m "feat(project): create base project"
+
+Tham khảo commit chuyên nghiệp "git commit conversion"
+
+Đẩy code từ local lên server
+$git push --set-upstream origin main
+
+Kéo code mới về máy khi có sự thay đổi 
+$git pull 
+
+Tổng kết :
+git add -> git commit -> git push | git config | git clone | git checkout -b main
+git add : đưa code từ working directory sang stagging 
+git commit : đưa code từ stagging area sang local repo
+git push : đưa code từ local repo sang git server
