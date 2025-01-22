@@ -90,3 +90,5 @@ $exit
 $sudo nano /etc/sudoers
 ---Edit---
 user_name ALL=(ALL)  ALL
+
+$vi /etc/hostname Đổi host name của root
