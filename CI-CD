@@ -1,0 +1,5 @@
+CI/CD là gì
+CI : Continuous Intergration
+CD : Continuous Deployment / Continuous Delivery
+
+Công cụ triển khai CI/CD : Gitlab CI/CD và Jenkins 
