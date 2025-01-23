@@ -63,7 +63,7 @@ vi etc/mysql/mariadb.conf.d/50-server.cnf : chỉnh sửa DB để truy cập ng
 bind-address = 127.0.0.1
 -> bind-address = 0.0.0.0
 -----end script-----
-sysctl restart mariadb
+$systemctl restart mariadb
 Để có thể chạy đầy đủ dự án, cần phải thêm file db dự án vào db của server
 $mysql -u root
 > show databases (xem các DB hiện có)
@@ -75,10 +75,11 @@ password của user'
 > exit
 
 Truy cập database bằng user:
-mysql -h 192.168.x.xxx -P 33xx -u shoeshop
+mysql -h 192.168.x.xxx -P 33xx -u shoeshop -p
   -h : Địa chỉ IP của server
   -P : port dùng để truy cập
   -u : user sử dụng
+  -p : để nhập mật khẩu
 > use shoeshop; (sử dụng DB cần dùng)
 > show tables; (sử dụng để hiển thị các table trong DB)
 > source file_db_path.db 
