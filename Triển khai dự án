@@ -91,3 +91,6 @@ $nohup java -jar file_build.jar 2>&1 & : chạy dạng nền và lưu log ở fi
 $kill -9 PID
   -9 : buộc process dừng lại
 Chạy dạng vm2
+Fix lỗi chạy chung port : ex 8080
+vi application.properties
+add thêm dòng server.port: port_number 
