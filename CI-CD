@@ -3,3 +3,85 @@ CI : Continuous Intergration
 CD : Continuous Deployment / Continuous Delivery
 
 Công cụ triển khai CI/CD : Gitlab CI/CD và Jenkins 
+
+Các bước triển khai :
+B1 : Cài đặt công cụ tự động (Gitlab Runner)
+B2 : Viết file cấu hình công việc (file *.gitlab-ci.yml)
+
+Kết nối Gitlab Runner với project:
+$gitlab-runner register
+
+File cấu hình gitlab-runner:
+$vi /etc/gitlab-runner/config.toml
+concurrent = 1 (chạy được n dự án)
+
+Khởi động gitlab-runner:
+$nohup gitlab-runner run --working-directory /home/gitlab-runner/ --config /etc/gitlab-runner/config.toml --service gitlab-runner --user gitlab-runner 2>&1 &
+  --working-directory: chỉ định thư mục làm việc
+
+Kiểm tra process đang chạy:
+$ps -ef | grep gitlab-runner
+
+Giúp Gitlab-runner sử dụng sudo mà không cần dùng password
+$visudo
+  gitlab-runner ALL=(ALL) NOPASSWD: /bin/cp*
+  gitlab-runner ALL=(ALL) NOPASSWD: /bin/chown*
+  gitlab-runner ALL=(ALL) NOPASSWD: /bin/su shoeshop*
+
+Search "gitlab cicd syntax" tra việc triển khai 
+
+Search "gitlab cicd variable list" tra các biến sử dụng 
+
+
+Viết file cấu hình:
+-----.gilab-ci.yml-----
+variables:
+  projectname: shoe-ShoppingCart
+  projectuser: shoeshop
+  version: 0.0.1
+  projectpath: /datas/shoeshop
+stages:
+  - build
+  - deploy
+  - showlog
+build:
+  stage: build
+  variables:
+    GIT_STRATEGY: clone
+  script: 
+    - mvn install -DskipTests=true
+  tags:
+    - gitlab-server
+  only:
+    - tags
+deploy:
+  stage: deploy
+  when: manual 
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - >
+      if ["$GITLAB_USER_LOGIN" == "mahito"]; then
+        sudo cp target/$projectname-$version-SNAPSHOT.jar $projectpath
+        sudo -R chown $projectuser. $projectpath
+        sudo su $projectuser -c "kill -9 $(ps -ef | grep $projectname-$version-SNAPSHOT.jar | grep -v grep | awk '{print $2}')"
+        sudo su $projectuser -c "cd $projectpath; nohup java -jar $projectname-$version-SNAPSHOT.jar 2>&1 &"
+      else
+        echo "Permission denied"
+        exit 1
+      fi
+tags:
+    - gitlab-server
+  only:
+    - tags
+showlog:
+  stage: showlog
+  when: manual 
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - sudo su $projectuser -c "cd $projectpath; tail -n 10000 nohup.out"
+  tags:
+    - gitlab-server
+  only:
+    - tags
