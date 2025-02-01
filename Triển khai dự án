@@ -55,6 +55,11 @@ ExecStart=npm run start -- --port=3000
 $systemctl daemon-reload
 $systemctl start vision
 $systemctl status vision
+
+Fix lỗi trùng port khi chạy dự án react js
+Sửa lỗi file -> package.json
+Thêm dòng "start": "PORT=300x react-scripts start"
+
 -----Chạy dự án Backend có DB là MariaDB-----
 /etc/mysql/ : thư mục chứa DB
 systemctl stop mariadb (khi chỉnh sửa file conf DB cần dừng dịch vụ)
