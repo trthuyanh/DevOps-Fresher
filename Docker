@@ -1,0 +1,58 @@
+Cách triển khai container
+
+Tại sao sử dụng Docker?
+
+Cài đặt docker 
+$vi install-docker.sh (tham khảo DevOpsSeEdu)
+
+Search images docker
+Keywork "ubuntu docker images"
+
+Kiểm tra các phiên bản images docker
+$docker image
+
+Đặt tên cho docker cùng với phiên bản
+$docker run --name ubuntu -it ubuntu:22.04
+
+Xem lại trạng thái các container đang có trên server
+$docker ps -a
+
+Khởi động một container:
+$docker start ubuntu : có thể là NAMES hoặc 3 ký tự đầu của ID CONTAINER
+
+Vào container:
+$docker exec -it ubuntu bash
+
+$docker run --name nginx -p 9999:80 nginx
+  -d : chạy dưới nền
+  9999: port chạy trên server
+  80: port chạy trong container
+
+Dừng các docker container:
+$docker stop ubuntu
+
+Xóa docker container:
+$docker rm ubuntu 
+$docker -f ubuntu
+  -f : buộc xóa khi docker đang run 
+
+Xóa docker image:
+$docker rmi name:tag (latest thì không cần tag)
+
+-----Dockerfile-----
++ Đưa source code vào trong container 
++ Cài đặt công cụ để chạy dự án
+
+Dockerfile commands
+FROM : kéo image đã dựng trên server
+WORKDIR : thư mục làm việc (mặc định WORKDIR/app)
+COPY : copy source code vào trong container 
+RUN : chạy các câu lệnh trên Linux
+ENV : khai báo các biến
+EXPOSE : định nghĩa ứng dụng container được chạy trong port nào
+CMD : xác định lệnh và giá trị của lệnh
+ENTRYPOINT : giữ nguyên giá trị lệnh mặc định 
+
+-----Build dự án Frontend-----
+Keywork "maven docker image with java 8 alpine"
+Keywork "java docker image version 8"
