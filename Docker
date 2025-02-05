@@ -53,6 +53,94 @@ EXPOSE : định nghĩa ứng dụng container được chạy trong port nào
 CMD : xác định lệnh và giá trị của lệnh
 ENTRYPOINT : giữ nguyên giá trị lệnh mặc định 
 
------Build dự án Frontend-----
+-----Build dự án Backend-----
+Lưu ý : Nếu nhận được error "org.hibernate.exception.JDBCConnectionException: Could not open connection"
+nghĩa là dự án chưa tạo database
+
 Keywork "maven docker image with java 8 alpine"
 Keywork "java docker image version 8"
+
+Tạo file Dockerfile
+-----start script-----
+## Build stage ##
+FROM maven:3.5.3-jdk-8-alpine AS build
+
+WORKDIR /app
+COPY . .
+
+RUN mvn install -DskipTests=true
+
+## Run stage ##
+FROM amazoncorretto:8u402-alpine-jre
+
+WORKDIR /run
+COPY --from=build /app/target/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar /run/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "/run/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar"]
+-----end script-----
+
+Buld docker file
+$ docker build -t shoeshop:v1 .
+
+Chạy container:
+$ docker run --name shoeshop -dp 8888:8080 shoeshop:v1
+
+Tự viết scrip cài đặt công cụ nếu không tin tưởng source nào 
+Search "Docker alpine image"
+Search "How to install java 8 from alpine"
+-----start script-----
+## Build stage ##
+FROM maven:3.5.3-jdk-8-alpine AS build
+
+WORKDIR /app
+COPY . .
+
+RUN mvn install -DskipTests=true
+
+## Run stage ##
+FROM alpine:3.19
+
+RUN apk add openjdk8
+
+WORKDIR /run
+COPY --from=build /app/target/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar /run/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "/run/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar"]
+-----end script-----
+
+$docker build -t shoeshop:v2 -f Dockerfile-v2 .
+$docker run --name shoeshop-v2 -dp 9999:8080 shoeshop:v2 -f
+  -f : xem log real time
+
+Chạy docker dưới dạng user
+-----start script-----
+## Build stage ##
+FROM maven:3.5.3-jdk-8-alpine AS build
+
+WORKDIR /app
+COPY . .
+
+RUN mvn install -DskipTests=true
+
+## Run stage ##
+FROM alpine:3.19
+
+RUN adduser -D shoeshop
+
+RUN apk add openjdk8
+
+WORKDIR /run
+COPY --from=build /app/target/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar /run/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar
+
+RUN chown -R shoeshop:shoeshop /run
+
+USER shoeshop
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "/run/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar"]
+-----end script-----
